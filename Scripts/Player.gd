@@ -49,35 +49,39 @@ func handleInput(delta):
 
 func handleSprite():
 	$AnimatedSprite.speed_scale = 1
-	if (velocity.x < -0.5):
-		$AnimatedSprite.flip_h = true
-		if (dir < 0):
-			$AnimatedSprite.play("running")
+	if grounded:
+		if (velocity.x < -0.5):
+			$AnimatedSprite.flip_h = true
+			if (dir < 0):
+				$AnimatedSprite.play("running")
+			else:
+				$AnimatedSprite.play("stopping")
+			if velocity.x == -maxSpeed:
+					$AnimatedSprite.speed_scale = 1.8
+		elif (velocity.x > 0.5):
+			$AnimatedSprite.flip_h = false
+			if (dir > 0):
+				$AnimatedSprite.play("running")	
+			else:
+				$AnimatedSprite.play("stopping")
+			if velocity.x == maxSpeed:
+					$AnimatedSprite.speed_scale = 1.8
 		else:
-			$AnimatedSprite.play("stopping")
-		if velocity.x == -maxSpeed:
-				$AnimatedSprite.speed_scale = 1.8
-	elif (velocity.x > 0.5):
-		$AnimatedSprite.flip_h = false
-		if (dir > 0):
-			$AnimatedSprite.play("running")	
-		else:
-			$AnimatedSprite.play("stopping")
-		if velocity.x == maxSpeed:
-				$AnimatedSprite.speed_scale = 1.8
+			$AnimatedSprite.play("standing")
+			$AnimatedSprite.flip_h = false
+	#	if (velocity.x != 0):
+	#		if dir !=
+	#		$AnimatedSprite.play("running")
+	#		if dir < 0:
+	#			$AnimatedSprite.flip_h = true
+	#		else:
+	#			$AnimatedSprite.flip_h = false
+	#	else:
+	#		$AnimatedSprite.flip_h = false
+	#		$AnimatedSprite.play("standing")
 	else:
-		$AnimatedSprite.play("standing")
-		$AnimatedSprite.flip_h = false
-#	if (velocity.x != 0):
-#		if dir !=
-#		$AnimatedSprite.play("running")
-#		if dir < 0:
-#			$AnimatedSprite.flip_h = true
-#		else:
-#			$AnimatedSprite.flip_h = false
-#	else:
-#		$AnimatedSprite.flip_h = false
-#		$AnimatedSprite.play("standing")
+		$AnimatedSprite.play("jumping")
+	
 
 
 func _on_GroundCheckArea2D_body_entered(_body):
