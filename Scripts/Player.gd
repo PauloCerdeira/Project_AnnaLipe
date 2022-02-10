@@ -5,6 +5,7 @@ var velocity = Vector2.ZERO
 var lastJumpPress = 1000
 var jumpHeight = 325
 var grounded = false
+var canLegdeHelp = false
 export var speed = 350
 export var maxSpeed = 275
 var gravity = 500
@@ -44,6 +45,9 @@ func handleInput(delta):
 	if lastJumpPress < 0.15 and grounded:
 		velocity.y = -jumpHeight 
 	velocity = move_and_slide(velocity)
+	
+	if Input.is_action_just_pressed("menu"):
+		$Camera2D/Menu.visible = !$Camera2D/Menu.visible
 	
 #	print(-maxSpeed / 1.25, velocity)
 
@@ -92,3 +96,17 @@ func _on_GroundCheckArea2D_body_entered(_body):
 func _on_GroundCheckArea2D_body_exited(_body):
 	if _body.name != 'Player':
 		grounded = false
+
+
+func _on_TouchArea_body_entered(body):
+	if body.name == "TileMap" && canLegdeHelp && dir > 0:
+		self.position.x += 10
+		print("ativo porra " + str(dir))
+
+
+func _on_checkArea_body_entered(body):
+	canLegdeHelp = true
+
+
+func _on_checkArea_body_exited(body):
+	canLegdeHelp = false
